@@ -1,4 +1,4 @@
-package com.example.xyzreader.util;
+package com.varunbarad.xyzreader.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
