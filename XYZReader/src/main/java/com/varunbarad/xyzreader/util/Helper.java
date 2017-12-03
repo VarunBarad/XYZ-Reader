@@ -14,7 +14,8 @@ public final class Helper {
   public static Date parsePublishedDate(String dateString) {
     try {
       return (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss", Locale.getDefault())).parse(dateString);
-    } catch (ParseException ex) {
+    } catch (ParseException e) {
+      e.printStackTrace();
       return new Date();
     }
   }
