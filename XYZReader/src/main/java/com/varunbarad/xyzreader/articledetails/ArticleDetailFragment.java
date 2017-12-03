@@ -2,14 +2,12 @@ package com.varunbarad.xyzreader.articledetails;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.Loader;
-import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -20,12 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.varunbarad.xyzreader.R;
-import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.articlelist.ArticleListActivity;
-import com.varunbarad.xyzreader.ui.ImageLoaderHelper;
+import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.util.Helper;
 
 import java.text.SimpleDateFormat;
@@ -149,25 +144,6 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
         
       }
       bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-      ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-          .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-              Bitmap bitmap = imageContainer.getBitmap();
-              if (bitmap != null) {
-                Palette p = Palette.generate(bitmap, 12);
-                mMutedColor = p.getDarkMutedColor(0xFF333333);
-                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                mRootView.findViewById(R.id.meta_bar)
-                    .setBackgroundColor(mMutedColor);
-              }
-            }
-            
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-            
-            }
-          });
     } else {
       mRootView.setVisibility(View.GONE);
       titleView.setText("N/A");

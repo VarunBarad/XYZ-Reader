@@ -9,13 +9,13 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.data.ItemsContract;
-import com.varunbarad.xyzreader.ui.DynamicHeightNetworkImageView;
-import com.varunbarad.xyzreader.ui.ImageLoaderHelper;
 import com.varunbarad.xyzreader.util.Helper;
 
 import java.text.SimpleDateFormat;
@@ -79,10 +79,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
               + "<br/>" + " by "
               + this.cursor.getString(ArticleLoader.Query.AUTHOR)));
     }
-    holder.thumbnailView.setImageUrl(
-        this.cursor.getString(ArticleLoader.Query.THUMB_URL),
-        ImageLoaderHelper.getInstance(this.context).getImageLoader());
-    holder.thumbnailView.setAspectRatio(this.cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+    Picasso
+        .with(this.context)
+        .load(this.cursor.getString(ArticleLoader.Query.THUMB_URL))
+        .into(holder.thumbnailView);
   }
   
   @Override
@@ -91,7 +91,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
   }
   
   public class ViewHolder extends RecyclerView.ViewHolder {
-    public DynamicHeightNetworkImageView thumbnailView;
+    public ImageView thumbnailView;
     public TextView titleView;
     public TextView subtitleView;
     
