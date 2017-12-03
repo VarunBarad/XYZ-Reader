@@ -29,4 +29,7 @@ dependencies {
 
     // Used to load images from network
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    // Library used for JSON serialization/deserialization
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
