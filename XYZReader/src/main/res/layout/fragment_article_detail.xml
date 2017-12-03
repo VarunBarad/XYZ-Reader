@@ -32,7 +32,7 @@
 
             </FrameLayout>
 
-            <com.varunbarad.xyzreader.ui.MaxWidthLinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -88,7 +88,7 @@
                     android:textColorLink="@color/colorAccent"
                     android:textSize="@dimen/detail_body_text_size"/>
 
-            </com.varunbarad.xyzreader.ui.MaxWidthLinearLayout>
+            </LinearLayout>
         </FrameLayout>
     </ScrollView>
 
