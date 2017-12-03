@@ -1,17 +1,13 @@
-package com.varunbarad.xyzreader.ui;
+package com.varunbarad.xyzreader.articledetails;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
-import android.view.ViewGroup;
 
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.data.ArticleLoader;
@@ -26,16 +22,16 @@ public class ArticleDetailActivity extends AppCompatActivity implements LoaderMa
   private long mStartId;
   
   private ViewPager mPager;
-  private MyPagerAdapter mPagerAdapter;
+  private ArticlesPagerAdapter mPagerAdapter;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_article_detail);
-    
-    getLoaderManager().initLoader(0, null, this);
-    
-    mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+  
+    getSupportLoaderManager().initLoader(0, null, this);
+  
+    mPagerAdapter = new ArticlesPagerAdapter(getSupportFragmentManager(), this.mCursor);
     mPager = findViewById(R.id.pager);
     mPager.setAdapter(mPagerAdapter);
     mPager.setPageMargin((int) TypedValue
@@ -71,6 +67,7 @@ public class ArticleDetailActivity extends AppCompatActivity implements LoaderMa
   @Override
   public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
     mCursor = cursor;
+    mPagerAdapter.setCursor(mCursor);
     mPagerAdapter.notifyDataSetChanged();
     
     // Select the start ID
@@ -94,26 +91,26 @@ public class ArticleDetailActivity extends AppCompatActivity implements LoaderMa
     mCursor = null;
     mPagerAdapter.notifyDataSetChanged();
   }
-  
-  private class MyPagerAdapter extends FragmentStatePagerAdapter {
-    public MyPagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
-    
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-      super.setPrimaryItem(container, position, object);
-    }
-    
-    @Override
-    public Fragment getItem(int position) {
-      mCursor.moveToPosition(position);
-      return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
-    }
-    
-    @Override
-    public int getCount() {
-      return (mCursor != null) ? mCursor.getCount() : 0;
-    }
-  }
+
+//  private class MyPagerAdapter extends FragmentStatePagerAdapter {
+//    public MyPagerAdapter(FragmentManager fm) {
+//      super(fm);
+//    }
+//
+//    @Override
+//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+//      super.setPrimaryItem(container, position, object);
+//    }
+//
+//    @Override
+//    public Fragment getItem(int position) {
+//      mCursor.moveToPosition(position);
+//      return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+//    }
+//
+//    @Override
+//    public int getCount() {
+//      return (mCursor != null) ? mCursor.getCount() : 0;
+//    }
+//  }
 }

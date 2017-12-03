@@ -1,13 +1,13 @@
 package com.varunbarad.xyzreader.ui;
 
-import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.varunbarad.xyzreader.R;
+import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.data.ItemsContract;
 import com.varunbarad.xyzreader.data.UpdaterService;
@@ -73,7 +74,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
     
     mRecyclerView = findViewById(R.id.recycler_view);
-    getLoaderManager().initLoader(0, null, this);
+    getSupportLoaderManager().initLoader(0, null, this);
     
     if (savedInstanceState == null) {
       refresh();

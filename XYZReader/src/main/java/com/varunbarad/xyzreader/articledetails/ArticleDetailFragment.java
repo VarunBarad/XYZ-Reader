@@ -1,14 +1,14 @@
-package com.varunbarad.xyzreader.ui;
+package com.varunbarad.xyzreader.articledetails;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -24,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.data.ArticleLoader;
+import com.varunbarad.xyzreader.ui.ArticleListActivity;
+import com.varunbarad.xyzreader.ui.ImageLoaderHelper;
 import com.varunbarad.xyzreader.util.Helper;
 
 import java.text.SimpleDateFormat;
@@ -43,9 +45,7 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
   private long mItemId;
   private View mRootView;
   private int mMutedColor = 0xFF333333;
-  private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
   
-  private View mPhotoContainerView;
   private ImageView mPhotoView;
   
   // Use default locale format
@@ -94,10 +94,8 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-    mDrawInsetsFrameLayout = mRootView.findViewById(R.id.draw_insets_frame_layout);
     
     mPhotoView = mRootView.findViewById(R.id.photo);
-    mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
     
     mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
       @Override
