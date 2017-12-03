@@ -1,4 +1,4 @@
-<com.varunbarad.xyzreader.ui.DrawInsetsFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/draw_insets_frame_layout"
     android:layout_width="match_parent"
@@ -105,4 +105,4 @@
         android:src="@drawable/ic_share"
         android:stateListAnimator="@anim/fab_state_list_anim"/>
 
-</com.varunbarad.xyzreader.ui.DrawInsetsFrameLayout>
+</FrameLayout>

@@ -1,4 +1,4 @@
-package com.varunbarad.xyzreader.ui;
+package com.varunbarad.xyzreader.articlelist;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,6 +25,8 @@ import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.data.ItemsContract;
 import com.varunbarad.xyzreader.data.UpdaterService;
+import com.varunbarad.xyzreader.ui.DynamicHeightNetworkImageView;
+import com.varunbarad.xyzreader.ui.ImageLoaderHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

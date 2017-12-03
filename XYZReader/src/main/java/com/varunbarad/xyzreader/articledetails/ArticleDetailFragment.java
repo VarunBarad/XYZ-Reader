@@ -24,7 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.data.ArticleLoader;
-import com.varunbarad.xyzreader.ui.ArticleListActivity;
+import com.varunbarad.xyzreader.articlelist.ArticleListActivity;
 import com.varunbarad.xyzreader.ui.ImageLoaderHelper;
 import com.varunbarad.xyzreader.util.Helper;
 
