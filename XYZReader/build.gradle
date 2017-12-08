@@ -18,6 +18,10 @@ android {
 
 ext {
     androidSupportVersion = "26.1.0"
+    retrofitVersion = "2.3.0"
+    okHttpVersion = "3.8.0"
+    picassoVersion = "2.5.2"
+    gsonVersion = "2.8.2"
 }
 
 dependencies {
@@ -38,4 +42,8 @@ dependencies {
 
     // Library used for JSON serialization/deserialization
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    // Retrofit to fetch and parse API responses
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
 }

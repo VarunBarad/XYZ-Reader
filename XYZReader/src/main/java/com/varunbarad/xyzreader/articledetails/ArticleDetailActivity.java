@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 
 import com.varunbarad.xyzreader.R;
-import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.data.ItemsContract;
+import com.varunbarad.xyzreader.temp.ArticleLoader;
 
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.

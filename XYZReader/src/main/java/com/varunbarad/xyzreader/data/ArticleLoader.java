@@ -1,44 +1,91 @@
 package com.varunbarad.xyzreader.data;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.v4.content.CursorLoader;
+import android.support.v4.content.AsyncTaskLoader;
+
+import com.varunbarad.xyzreader.data.model.Article;
+import com.varunbarad.xyzreader.remote.ArticleApi;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Helper for loading a list of articles or a single article.
+ * Creator: Varun Barad
+ * Date: 07-12-2017
+ * Project: XYZ-Reader
  */
-public class ArticleLoader extends CursorLoader {
-  private ArticleLoader(Context context, Uri uri) {
-    super(context, uri, Query.PROJECTION, null, null, ItemsContract.Items.DEFAULT_SORT);
+public final class ArticleLoader extends AsyncTaskLoader<ArrayList<Article>> {
+  private static final long ACCEPTABLE_DELAY = 10 * 60 * 1000;
+  
+  private ArrayList<Article> articles;
+  
+  private long lastLoadTime = 0;
+  
+  private ArticleLoader(Context context) {
+    super(context);
   }
   
-  public static ArticleLoader newAllArticlesInstance(Context context) {
-    return new ArticleLoader(context, ItemsContract.Items.buildDirUri());
+  public static ArticleLoader getInstance(Context context) {
+    return new ArticleLoader(context);
   }
   
-  public static ArticleLoader newInstanceForItemId(Context context, long itemId) {
-    return new ArticleLoader(context, ItemsContract.Items.buildItemUri(itemId));
+  @Override
+  protected void onStartLoading() {
+    if ((this.articles != null) && (!this.isDataRefreshNeeded())) {
+      this.deliverResult(this.articles);
+    } else {
+      this.forceLoad();
+    }
   }
   
-  public interface Query {
-    String[] PROJECTION = {
-        ItemsContract.Items._ID,
-        ItemsContract.Items.TITLE,
-        ItemsContract.Items.PUBLISHED_DATE,
-        ItemsContract.Items.AUTHOR,
-        ItemsContract.Items.THUMB_URL,
-        ItemsContract.Items.PHOTO_URL,
-        ItemsContract.Items.ASPECT_RATIO,
-        ItemsContract.Items.BODY,
-    };
+  @Override
+  public ArrayList<Article> loadInBackground() {
+    if ((this.articles != null) && (!this.isDataRefreshNeeded())) {
+      return this.articles;
+    } else {
+      Retrofit retrofit = new Retrofit.Builder()
+          .baseUrl(ArticleApi.baseUrl)
+          .addConverterFactory(GsonConverterFactory.create())
+          .build();
+      
+      ArticleApi articleApi = retrofit.create(ArticleApi.class);
+      
+      Response<ArrayList<Article>> response;
+      try {
+        response = articleApi
+            .getAllArticles()
+            .execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+        response = null;
+      }
+      
+      ArrayList<Article> articles;
+      if ((response != null) && (response.isSuccessful())) {
+        articles = response.body();
+      } else {
+        articles = new ArrayList<>(0);
+      }
+      
+      this.lastLoadTime = System.currentTimeMillis();
+      return articles;
+    }
+  }
+  
+  @Override
+  public void deliverResult(ArrayList<Article> data) {
+    this.articles = data;
     
-    int _ID = 0;
-    int TITLE = 1;
-    int PUBLISHED_DATE = 2;
-    int AUTHOR = 3;
-    int THUMB_URL = 4;
-    int PHOTO_URL = 5;
-    int ASPECT_RATIO = 6;
-    int BODY = 7;
+    // Need to return a new object every time or else it won't call
+    // onLoadFinished if it finds the same reference being returned
+    super.deliverResult(new ArrayList<>(this.articles));
+  }
+  
+  private boolean isDataRefreshNeeded() {
+    return ((System.currentTimeMillis() - this.lastLoadTime) > ArticleLoader.ACCEPTABLE_DELAY);
   }
 }

@@ -36,10 +36,6 @@
                 android:value="com.varunbarad.xyzreader.articlelist.ArticleListActivity"/>
         </activity>
 
-        <service
-            android:name="com.varunbarad.xyzreader.data.UpdaterService"
-            android:exported="false"/>
-
         <provider
             android:name="com.varunbarad.xyzreader.data.ItemsProvider"
             android:authorities="com.varunbarad.xyzreader"

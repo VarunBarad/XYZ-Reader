@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.articlelist.ArticleListActivity;
-import com.varunbarad.xyzreader.data.ArticleLoader;
+import com.varunbarad.xyzreader.temp.ArticleLoader;
 import com.varunbarad.xyzreader.util.Helper;
 
 import java.text.SimpleDateFormat;

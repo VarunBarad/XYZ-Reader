@@ -2,7 +2,6 @@ package com.varunbarad.xyzreader.articlelist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -14,11 +13,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.varunbarad.xyzreader.R;
-import com.varunbarad.xyzreader.data.ArticleLoader;
 import com.varunbarad.xyzreader.data.ItemsContract;
+import com.varunbarad.xyzreader.data.model.Article;
 import com.varunbarad.xyzreader.util.Helper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -27,19 +27,18 @@ import java.util.GregorianCalendar;
  * Date: 03-12-2017
  * Project: XYZ-Reader
  */
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
-  private Cursor cursor;
+public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
+  private ArrayList<Article> articles;
   private Context context;
   
-  public ArticleAdapter(Cursor cursor, Context context) {
-    this.cursor = cursor;
+  public ArticleAdapter(ArrayList<Article> articles, Context context) {
+    this.articles = articles;
     this.context = context;
   }
   
   @Override
   public long getItemId(int position) {
-    this.cursor.moveToPosition(position);
-    return this.cursor.getLong(ArticleLoader.Query._ID);
+    return this.articles.get(position).getId();
   }
   
   @Override
@@ -47,23 +46,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     View view = LayoutInflater
         .from(parent.getContext())
         .inflate(R.layout.list_item_article, parent, false);
-    
-    final ArticleAdapter.ViewHolder holder = new ArticleAdapter.ViewHolder(view);
-    view.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        context.startActivity(new Intent(Intent.ACTION_VIEW,
-            ItemsContract.Items.buildItemUri(getItemId(holder.getAdapterPosition()))));
-      }
-    });
-    return holder;
+  
+    return new ArticleAdapter.ViewHolder(view);
   }
   
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
-    this.cursor.moveToPosition(position);
-    holder.titleView.setText(this.cursor.getString(ArticleLoader.Query.TITLE));
-    Date publishedDate = Helper.parsePublishedDate(this.cursor.getString(ArticleLoader.Query.PUBLISHED_DATE));
+    holder
+        .titleView
+        .setText(this.articles.get(position).getTitle());
+  
+    Date publishedDate = Helper.parsePublishedDate(this.articles.get(position).getPublicationDate());
     if (!publishedDate.before((new GregorianCalendar(2, 1, 1)).getTime())) { //ToDo: Clean the code
       
       holder.subtitleView.setText(Html.fromHtml(
@@ -72,35 +65,54 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
               System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
               DateUtils.FORMAT_ABBREV_ALL).toString()
               + "<br/>" + " by "
-              + this.cursor.getString(ArticleLoader.Query.AUTHOR)));
+              + this.articles.get(position).getAuthor()));
     } else {
       holder.subtitleView.setText(Html.fromHtml(
           (new SimpleDateFormat()).format(publishedDate) //ToDo: Clean the code
               + "<br/>" + " by "
-              + this.cursor.getString(ArticleLoader.Query.AUTHOR)));
+              + this.articles.get(position).getAuthor()));
     }
     Picasso
         .with(this.context)
-        .load(this.cursor.getString(ArticleLoader.Query.THUMB_URL))
+        .load(this.articles.get(position).getThumbnailUrl())
         .into(holder.thumbnailView);
   }
   
   @Override
   public int getItemCount() {
-    return this.cursor.getCount();
+    if (this.articles != null) {
+      return this.articles.size();
+    } else {
+      return 0;
+    }
   }
   
-  public class ViewHolder extends RecyclerView.ViewHolder {
-    public ImageView thumbnailView;
-    public TextView titleView;
-    public TextView subtitleView;
+  public void setArticles(ArrayList<Article> articles) {
+    this.articles = articles;
+    this.notifyDataSetChanged();
+  }
+  
+  protected class ViewHolder extends RecyclerView.ViewHolder {
+    private ImageView thumbnailView;
+    private TextView titleView;
+    private TextView subtitleView;
     
-    public ViewHolder(View itemView) {
+    private ViewHolder(View itemView) {
       super(itemView);
       
       thumbnailView = itemView.findViewById(R.id.thumbnail);
       titleView = itemView.findViewById(R.id.article_title);
       subtitleView = itemView.findViewById(R.id.article_subtitle);
+      
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          context.startActivity(new Intent(
+              Intent.ACTION_VIEW,
+              ItemsContract.Items.buildItemUri(ArticleAdapter.this.getItemId(getAdapterPosition()))
+          ));
+        }
+      });
     }
   }
 }

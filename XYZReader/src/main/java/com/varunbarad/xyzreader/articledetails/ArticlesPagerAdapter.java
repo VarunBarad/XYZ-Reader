@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.varunbarad.xyzreader.data.ArticleLoader;
+import com.varunbarad.xyzreader.temp.ArticleLoader;
 
 /**
  * Creator: Varun Barad

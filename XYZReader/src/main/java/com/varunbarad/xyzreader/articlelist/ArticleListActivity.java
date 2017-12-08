@@ -1,22 +1,21 @@
 package com.varunbarad.xyzreader.articlelist;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.ArticleLoader;
-import com.varunbarad.xyzreader.data.UpdaterService;
+import com.varunbarad.xyzreader.data.model.Article;
 import com.varunbarad.xyzreader.databinding.ActivityArticleListBinding;
+
+import java.util.ArrayList;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -24,87 +23,135 @@ import com.varunbarad.xyzreader.databinding.ActivityArticleListBinding;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Article>> {
+  private static final int LOADER_ID_ARTICLES = 1;
+  
   private ActivityArticleListBinding dataBinding;
   
-  private boolean mIsRefreshing = false;
-  
-  private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-      if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
-        mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
-        updateRefreshingUI();
-      }
-    }
-  };
+  private ArticleAdapter articleAdapter;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     this.dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
   
-    this.dataBinding.swipeRefreshLayoutArticleList.setRefreshing(true);
-    getSupportLoaderManager().initLoader(0, null, this);
-
-    if (savedInstanceState == null) {
-      refresh();
-    }
-  }
-  
-  private void refresh() {
-    startService(new Intent(this, UpdaterService.class));
-  }
-  
-  @Override
-  protected void onStart() {
-    super.onStart();
-    registerReceiver(mRefreshingReceiver,
-        new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
-  }
-  
-  @Override
-  protected void onStop() {
-    super.onStop();
-    unregisterReceiver(mRefreshingReceiver);
-  }
-  
-  private void updateRefreshingUI() {
-    this
-        .dataBinding
-        .swipeRefreshLayoutArticleList
-        .setRefreshing(mIsRefreshing);
-  }
-  
-  @Override
-  public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-    return ArticleLoader.newAllArticlesInstance(this);
-  }
-  
-  @Override
-  public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-    ArticleAdapter adapter = new ArticleAdapter(cursor, this);
-    adapter.setHasStableIds(true);
-    this
-        .dataBinding
-        .recyclerViewArticleListArticles
-        .setAdapter(adapter);
-    
     int columnCount = getResources().getInteger(R.integer.list_column_count);
     StaggeredGridLayoutManager layoutManager =
         new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
   
-    this
-        .dataBinding
+    this.dataBinding
         .recyclerViewArticleListArticles
         .setLayoutManager(layoutManager);
+  
+    if (savedInstanceState == null) {
+      this.refresh();
+    }
+  
+    this.dataBinding
+        .swipeRefreshLayoutArticleListArticles
+        .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+          @Override
+          public void onRefresh() {
+            ArticleListActivity.this.refresh();
+          }
+        });
+    this.dataBinding
+        .swipeRefreshLayoutArticleListPlaceholderError
+        .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+          @Override
+          public void onRefresh() {
+            ArticleListActivity.this.refresh();
+          }
+        });
+  }
+  
+  private void refresh() {
+    this.showProgress();
+  
+    Loader<ArrayList<Article>> articleLoader = this.getSupportLoaderManager()
+        .getLoader(ArticleListActivity.LOADER_ID_ARTICLES);
+    if (articleLoader != null) {
+      articleLoader.forceLoad();
+    } else {
+      this.getSupportLoaderManager()
+          .initLoader(ArticleListActivity.LOADER_ID_ARTICLES, null, this);
+    }
   }
   
   @Override
-  public void onLoaderReset(Loader<Cursor> loader) {
-    this
-        .dataBinding
-        .recyclerViewArticleListArticles
-        .setAdapter(null);
+  public Loader<ArrayList<Article>> onCreateLoader(int id, Bundle bundle) {
+    return ArticleLoader.getInstance(this);
+  }
+  
+  @Override
+  public void onLoadFinished(Loader<ArrayList<Article>> loader, ArrayList<Article> data) {
+    this.showArticles(data);
+  }
+  
+  @Override
+  public void onLoaderReset(Loader<ArrayList<Article>> loader) {
+  
+  }
+  
+  private void showProgress() {
+    this.dataBinding
+        .swipeRefreshLayoutArticleListPlaceholderError
+        .setVisibility(View.GONE);
+    this.dataBinding
+        .swipeRefreshLayoutArticleListPlaceholderError
+        .setRefreshing(false);
+    
+    this.dataBinding
+        .swipeRefreshLayoutArticleListArticles
+        .setRefreshing(true);
+    this.dataBinding
+        .swipeRefreshLayoutArticleListArticles
+        .setVisibility(View.VISIBLE);
+  }
+  
+  private void showArticles(ArrayList<Article> articles) {
+    if ((articles == null) || (articles.size() < 1)) {
+      this.showError();
+    } else {
+      if (this.articleAdapter != null) {
+        this.articleAdapter.setArticles(articles);
+      } else {
+        this.articleAdapter = new ArticleAdapter(articles, this);
+        this.dataBinding
+            .recyclerViewArticleListArticles
+            .setAdapter(this.articleAdapter);
+      }
+      
+      this.dataBinding
+          .swipeRefreshLayoutArticleListPlaceholderError
+          .setRefreshing(false);
+      this.dataBinding
+          .swipeRefreshLayoutArticleListPlaceholderError
+          .setVisibility(View.GONE);
+      
+      this.dataBinding
+          .swipeRefreshLayoutArticleListArticles
+          .setRefreshing(false);
+      this.dataBinding
+          .swipeRefreshLayoutArticleListArticles
+          .setVisibility(View.VISIBLE);
+    }
+  }
+  
+  private void showError() {
+    this.dataBinding
+        .swipeRefreshLayoutArticleListPlaceholderError
+        .setVisibility(View.VISIBLE);
+    this.dataBinding
+        .swipeRefreshLayoutArticleListPlaceholderError
+        .setRefreshing(false);
+    
+    this.dataBinding
+        .swipeRefreshLayoutArticleListArticles
+        .setVisibility(View.GONE);
+    
+    this.dataBinding
+        .swipeRefreshLayoutArticleListArticles
+        .setRefreshing(false);
   }
 }
