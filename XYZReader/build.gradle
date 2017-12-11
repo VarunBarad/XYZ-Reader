@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 26
@@ -18,10 +19,12 @@ android {
 
 ext {
     androidSupportVersion = "26.1.0"
+    constraintLayoutVersion = "1.0.2"
     retrofitVersion = "2.3.0"
     okHttpVersion = "3.8.0"
     picassoVersion = "2.5.2"
     gsonVersion = "2.8.2"
+    markwonVersion = "1.0.1"
 }
 
 dependencies {
@@ -33,6 +36,9 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${androidSupportVersion}"
     implementation "com.android.support:cardview-v7:${androidSupportVersion}"
     implementation "com.android.support:design:${androidSupportVersion}"
+
+    // Constraint layout library
+    implementation "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
 
     // Library used for performing network requests
     implementation 'com.squareup.okhttp3:okhttp:3.8.0'
@@ -46,4 +52,7 @@ dependencies {
     // Retrofit to fetch and parse API responses
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+
+    // Library to display Markdown text
+    implementation "ru.noties:markwon:${markwonVersion}"
 }

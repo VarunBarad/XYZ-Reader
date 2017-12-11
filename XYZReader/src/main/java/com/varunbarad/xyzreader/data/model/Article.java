@@ -3,13 +3,16 @@ package com.varunbarad.xyzreader.data.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.varunbarad.xyzreader.util.Helper;
+
+import io.realm.RealmObject;
 
 /**
  * Creator: Varun Barad
  * Date: 03-12-2017
  * Project: XYZ-Reader
  */
-public final class Article {
+public class Article extends RealmObject {
   @Expose
   @SerializedName("id")
   private long id;
@@ -94,6 +97,6 @@ public final class Article {
   }
   
   public String toJson() {
-    return (new Gson()).toJson(this);
+    return Helper.getGsonInstance().toJson(this);
   }
 }

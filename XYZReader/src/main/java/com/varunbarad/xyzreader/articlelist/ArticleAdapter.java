@@ -1,7 +1,6 @@
 package com.varunbarad.xyzreader.articlelist;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.varunbarad.xyzreader.R;
-import com.varunbarad.xyzreader.data.ItemsContract;
+import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.model.Article;
 import com.varunbarad.xyzreader.util.Helper;
 
@@ -92,7 +91,7 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
     this.notifyDataSetChanged();
   }
   
-  protected class ViewHolder extends RecyclerView.ViewHolder {
+  protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private ImageView thumbnailView;
     private TextView titleView;
     private TextView subtitleView;
@@ -103,16 +102,13 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
       thumbnailView = itemView.findViewById(R.id.thumbnail);
       titleView = itemView.findViewById(R.id.article_title);
       subtitleView = itemView.findViewById(R.id.article_subtitle);
-      
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          context.startActivity(new Intent(
-              Intent.ACTION_VIEW,
-              ItemsContract.Items.buildItemUri(ArticleAdapter.this.getItemId(getAdapterPosition()))
-          ));
-        }
-      });
+  
+      itemView.setOnClickListener(this);
+    }
+    
+    @Override
+    public void onClick(View view) {
+      ArticleDetailActivity.start(context, articles.get(getAdapterPosition()));
     }
   }
 }

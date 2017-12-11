@@ -9,6 +9,7 @@ import com.varunbarad.xyzreader.remote.ArticleApi;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import io.realm.Realm;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -79,6 +80,15 @@ public final class ArticleLoader extends AsyncTaskLoader<ArrayList<Article>> {
   @Override
   public void deliverResult(ArrayList<Article> data) {
     this.articles = data;
+  
+    Realm
+        .getDefaultInstance()
+        .executeTransactionAsync(new Realm.Transaction() {
+          @Override
+          public void execute(Realm realm) {
+            realm.insertOrUpdate(ArticleLoader.this.articles);
+          }
+        });
     
     // Need to return a new object every time or else it won't call
     // onLoadFinished if it finds the same reference being returned

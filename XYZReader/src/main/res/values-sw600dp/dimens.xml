@@ -6,4 +6,6 @@
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="appBar_height_blank">100dp</dimen>
+
+    <dimen name="margin_cardView_articleDetails">8dp</dimen>
 </resources>

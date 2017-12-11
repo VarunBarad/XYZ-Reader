@@ -9,4 +9,7 @@
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="appBar_height_blank">0dp</dimen>
+    <dimen name="title_toolbar">64sp</dimen>
+
+    <dimen name="margin_cardView_articleDetails">8dp</dimen>
 </resources>
