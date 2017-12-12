@@ -2,24 +2,18 @@ package com.varunbarad.xyzreader.articlelist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.model.Article;
+import com.varunbarad.xyzreader.databinding.ListItemArticleBinding;
 import com.varunbarad.xyzreader.util.Helper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Creator: Varun Barad
@@ -42,39 +36,17 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
   
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater
-        .from(parent.getContext())
-        .inflate(R.layout.list_item_article, parent, false);
+    LayoutInflater inflater =
+        LayoutInflater.from(parent.getContext());
+    ListItemArticleBinding itemBinding =
+        ListItemArticleBinding.inflate(inflater, parent, false);
   
-    return new ArticleAdapter.ViewHolder(view);
+    return new ArticleAdapter.ViewHolder(itemBinding);
   }
   
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
-    holder
-        .titleView
-        .setText(this.articles.get(position).getTitle());
-  
-    Date publishedDate = Helper.parsePublishedDate(this.articles.get(position).getPublicationDate());
-    if (!publishedDate.before((new GregorianCalendar(2, 1, 1)).getTime())) { //ToDo: Clean the code
-      
-      holder.subtitleView.setText(Html.fromHtml(
-          DateUtils.getRelativeTimeSpanString(
-              publishedDate.getTime(),
-              System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-              DateUtils.FORMAT_ABBREV_ALL).toString()
-              + "<br/>" + " by "
-              + this.articles.get(position).getAuthor()));
-    } else {
-      holder.subtitleView.setText(Html.fromHtml(
-          (new SimpleDateFormat()).format(publishedDate) //ToDo: Clean the code
-              + "<br/>" + " by "
-              + this.articles.get(position).getAuthor()));
-    }
-    Picasso
-        .with(this.context)
-        .load(this.articles.get(position).getThumbnailUrl())
-        .into(holder.thumbnailView);
+    holder.bind(this.articles.get(position));
   }
   
   @Override
@@ -92,18 +64,34 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
   }
   
   protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private ImageView thumbnailView;
-    private TextView titleView;
-    private TextView subtitleView;
+    private ListItemArticleBinding itemBinding;
+  
+    private ViewHolder(ListItemArticleBinding itemBinding) {
+      super(itemBinding.getRoot());
     
-    private ViewHolder(View itemView) {
-      super(itemView);
-      
-      thumbnailView = itemView.findViewById(R.id.thumbnail);
-      titleView = itemView.findViewById(R.id.article_title);
-      subtitleView = itemView.findViewById(R.id.article_subtitle);
+      this.itemBinding = itemBinding;
   
       itemView.setOnClickListener(this);
+    }
+  
+    private void bind(Article article) {
+      this.itemBinding
+          .articleTitle
+          .setText(article.getTitle());
+    
+      this.itemBinding
+          .articleSubtitle
+          .setText(String.format(
+              Locale.getDefault(),
+              "%s\nby %s",
+              Helper.getUserFriendlyDate(article.getPublicationDate()),
+              article.getAuthor()
+          ));
+    
+      Picasso
+          .with(this.itemBinding.thumbnail.getContext())
+          .load(article.getThumbnailUrl())
+          .into(this.itemBinding.thumbnail);
     }
     
     @Override
