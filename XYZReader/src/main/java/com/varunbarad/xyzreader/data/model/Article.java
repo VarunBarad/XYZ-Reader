@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.varunbarad.xyzreader.util.Helper;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Creator: Varun Barad
@@ -15,6 +16,7 @@ import io.realm.RealmObject;
 public class Article extends RealmObject {
   @Expose
   @SerializedName("id")
+  @PrimaryKey
   private long id;
   @Expose
   @SerializedName("title")

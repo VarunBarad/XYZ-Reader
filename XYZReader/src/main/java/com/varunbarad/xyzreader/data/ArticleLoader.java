@@ -65,9 +65,18 @@ public final class ArticleLoader extends AsyncTaskLoader<ArrayList<Article>> {
         response = null;
       }
       
-      ArrayList<Article> articles;
+      final ArrayList<Article> articles;
       if ((response != null) && (response.isSuccessful())) {
         articles = response.body();
+        
+        Realm
+            .getDefaultInstance()
+            .executeTransaction(new Realm.Transaction() {
+              @Override
+              public void execute(Realm realm) {
+                realm.insertOrUpdate(articles);
+              }
+            });
       } else {
         articles = new ArrayList<>(0);
       }
@@ -81,15 +90,6 @@ public final class ArticleLoader extends AsyncTaskLoader<ArrayList<Article>> {
   public void deliverResult(ArrayList<Article> data) {
     this.articles = data;
   
-    Realm
-        .getDefaultInstance()
-        .executeTransactionAsync(new Realm.Transaction() {
-          @Override
-          public void execute(Realm realm) {
-            realm.insertOrUpdate(ArticleLoader.this.articles);
-          }
-        });
-    
     // Need to return a new object every time or else it won't call
     // onLoadFinished if it finds the same reference being returned
     super.deliverResult(new ArrayList<>(this.articles));

@@ -17,6 +17,9 @@ import com.varunbarad.xyzreader.databinding.ActivityArticleListBinding;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 /**
  * An activity representing a list of Articles. This activity has different presentations for
  * handset and tablet-size devices. On handsets, the activity presents a list of items, which when
@@ -45,6 +48,8 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
   
     if (savedInstanceState == null) {
       this.refresh();
+    } else {
+      this.showArticles(this.retrieveArticles());
     }
   
     this.dataBinding
@@ -91,6 +96,14 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
   @Override
   public void onLoaderReset(Loader<ArrayList<Article>> loader) {
   
+  }
+  
+  private ArrayList<Article> retrieveArticles() {
+    Realm realm = Realm.getDefaultInstance();
+    
+    RealmResults<Article> recipeRealmResults = realm.where(Article.class).findAllSorted("id");
+    
+    return new ArrayList<>(realm.copyFromRealm(recipeRealmResults));
   }
   
   private void showProgress() {
