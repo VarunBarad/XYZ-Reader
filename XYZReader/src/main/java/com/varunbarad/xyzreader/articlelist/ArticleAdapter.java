@@ -1,16 +1,23 @@
 package com.varunbarad.xyzreader.articlelist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
 import com.varunbarad.xyzreader.data.model.Article;
 import com.varunbarad.xyzreader.databinding.ListItemArticleBinding;
 import com.varunbarad.xyzreader.util.Helper;
+import com.varunbarad.xyzreader.util.PaletteTransformation;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -76,6 +83,10 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
   
     private void bind(Article article) {
       this.itemBinding
+          .textViewDate
+          .setText(Helper.getUserFriendlyDate(article.getPublicationDate()));
+      
+      this.itemBinding
           .articleTitle
           .setText(article.getTitle());
     
@@ -83,17 +94,41 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
           .articleSubtitle
           .setText(String.format(
               Locale.getDefault(),
-              "%s\nby %s",
-              Helper.getUserFriendlyDate(article.getPublicationDate()),
+              "by %s",
               article.getAuthor()
           ));
     
       Picasso
           .with(this.itemBinding.thumbnail.getContext())
           .load(article.getThumbnailUrl())
-          .into(this.itemBinding.thumbnail);
+          .transform(PaletteTransformation.instance())
+          .into(
+              this.itemBinding.thumbnail,
+              new Callback() {
+                @Override
+                public void onSuccess() {
+                  Bitmap bitmap = ((BitmapDrawable) ViewHolder.this.itemBinding.thumbnail.getDrawable()).getBitmap();
+                  Palette palette = PaletteTransformation.getPalette(bitmap);
+            
+                  ViewHolder.this.setColorsFromPalette(palette);
+                }
+          
+                @Override
+                public void onError() {
+            
+                }
+              }
+          );
     }
+  
+    private void setColorsFromPalette(Palette palette) {
+      int primaryColor = ContextCompat.getColor(this.itemBinding.getRoot().getContext(), R.color.colorPrimary);
     
+      this.itemBinding
+          .backgroundMetaDetails
+          .setBackgroundColor(palette.getMutedColor(primaryColor));
+    }
+  
     @Override
     public void onClick(View view) {
       ArticleDetailActivity.start(context, articles.get(getAdapterPosition()));
