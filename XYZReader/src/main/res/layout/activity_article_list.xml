@@ -15,6 +15,7 @@
             android:id="@+id/appbar_articleList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_appBar"
             android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
 
             <android.support.v4.widget.Space
@@ -57,6 +58,10 @@
                     android:id="@+id/recyclerView_articleList_articles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/paddingVertical_articleList"
+                    android:paddingEnd="@dimen/paddingHorizontal_articleList"
+                    android:paddingStart="@dimen/paddingHorizontal_articleList"
+                    android:paddingTop="@dimen/paddingVertical_articleList"
                     android:scrollbars="vertical"
                     android:soundEffectsEnabled="true"/>
             </android.support.v4.widget.SwipeRefreshLayout>

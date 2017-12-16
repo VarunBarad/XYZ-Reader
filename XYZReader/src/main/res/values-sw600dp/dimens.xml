@@ -1,11 +1,13 @@
 <resources>
-    <!-- detail -->
-    <dimen name="detail_title_text_size">42sp</dimen>
-    <dimen name="detail_body_text_size">20sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.3</item>
-    <dimen name="fab_margin">24dp</dimen>
+    <!-- General -->
+    <dimen name="margin_floatingActionButton">32dp</dimen>
 
+    <!-- Article-List -->
     <dimen name="appBar_height_blank">100dp</dimen>
+    <dimen name="paddingHorizontal_articleList">25dp</dimen>
+    <dimen name="paddingVertical_articleList">10dp</dimen>
 
-    <dimen name="margin_cardView_articleDetails">8dp</dimen>
+    <!-- Article-Detail -->
+    <dimen name="paddingHorizontal_cardView_articleDetails">25dp</dimen>
+    <dimen name="paddingVertical_cardVew_articleDetails">16dp</dimen>
 </resources>

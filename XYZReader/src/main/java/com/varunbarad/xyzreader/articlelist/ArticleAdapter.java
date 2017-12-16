@@ -87,11 +87,11 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
           .setText(Helper.getUserFriendlyDate(article.getPublicationDate()));
       
       this.itemBinding
-          .articleTitle
+          .textViewTitle
           .setText(article.getTitle());
     
       this.itemBinding
-          .articleSubtitle
+          .textViewAuthor
           .setText(String.format(
               Locale.getDefault(),
               "by %s",
@@ -99,15 +99,15 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
           ));
     
       Picasso
-          .with(this.itemBinding.thumbnail.getContext())
+          .with(this.itemBinding.imageViewThumbnail.getContext())
           .load(article.getThumbnailUrl())
           .transform(PaletteTransformation.instance())
           .into(
-              this.itemBinding.thumbnail,
+              this.itemBinding.imageViewThumbnail,
               new Callback() {
                 @Override
                 public void onSuccess() {
-                  Bitmap bitmap = ((BitmapDrawable) ViewHolder.this.itemBinding.thumbnail.getDrawable()).getBitmap();
+                  Bitmap bitmap = ((BitmapDrawable) ViewHolder.this.itemBinding.imageViewThumbnail.getDrawable()).getBitmap();
                   Palette palette = PaletteTransformation.getPalette(bitmap);
             
                   ViewHolder.this.setColorsFromPalette(palette);

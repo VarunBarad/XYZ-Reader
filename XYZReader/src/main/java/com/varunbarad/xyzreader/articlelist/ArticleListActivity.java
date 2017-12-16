@@ -6,7 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.varunbarad.xyzreader.R;
@@ -38,9 +38,9 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     super.onCreate(savedInstanceState);
     this.dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
   
-    int columnCount = getResources().getInteger(R.integer.list_column_count);
-    StaggeredGridLayoutManager layoutManager =
-        new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
+    int columnCount = getResources().getInteger(R.integer.columns_articleList);
+    GridLayoutManager layoutManager =
+        new GridLayoutManager(this, columnCount, GridLayoutManager.VERTICAL, false);
   
     this.dataBinding
         .recyclerViewArticleListArticles

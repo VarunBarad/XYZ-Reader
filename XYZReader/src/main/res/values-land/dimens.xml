@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Article-List -->
+    <dimen name="appBar_height_blank">0dp</dimen>
+    <dimen name="paddingHorizontal_articleList">5dp</dimen>
+    <dimen name="paddingVertical_articleList">5dp</dimen>
+
+    <!-- Article-Detail -->
+    <dimen name="paddingHorizontal_cardView_articleDetails">18dp</dimen>
+    <dimen name="paddingVertical_cardVew_articleDetails">8dp</dimen>
+</resources>

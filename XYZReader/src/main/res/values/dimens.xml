@@ -1,15 +1,18 @@
 <resources>
-    <!-- detail -->
-    <dimen name="detail_title_text_size">32sp</dimen>
-    <dimen name="detail_body_text_size">22sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+    <!-- General -->
+    <dimen name="elevation_appBar">4dp</dimen>
+    <dimen name="elevation_cardView">2dp</dimen>
+    <dimen name="elevation_floatingActionButton">6dp</dimen>
+    <dimen name="margin_floatingActionButton">16dp</dimen>
 
-    <dimen name="fab_elevation">2dp</dimen>
-    <dimen name="fab_press_translation_z">6dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
-
+    <!-- Article-List -->
     <dimen name="appBar_height_blank">0dp</dimen>
-    <dimen name="title_toolbar">64sp</dimen>
+    <dimen name="paddingHorizontal_articleList">5dp</dimen>
+    <dimen name="paddingVertical_articleList">5dp</dimen>
 
-    <dimen name="margin_cardView_articleDetails">8dp</dimen>
+    <!-- Article-Detail -->
+    <dimen name="paddingHorizontal_cardView_articleDetails">8dp</dimen>
+    <dimen name="paddingVertical_cardVew_articleDetails">8dp</dimen>
+    <dimen name="padding_metaDetails_articleDetails">8dp</dimen>
+    <dimen name="padding_content_articleDetails">16dp</dimen>
 </resources>

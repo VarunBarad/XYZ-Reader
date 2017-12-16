@@ -7,19 +7,22 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light"
+        android:fitsSystemWindows="true"
         tools:context=".articledetails.ArticleDetailActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_articleDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_appBar"
+            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbar_articleDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
@@ -38,7 +41,6 @@
                     app:contentInsetStart="0dp"
                     app:contentInsetStartWithNavigation="0dp"
                     app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways"
                     app:paddingEnd="0dp"
                     app:paddingStart="0dp"
                     app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"/>
@@ -49,56 +51,49 @@
             android:id="@+id/scrollView_articleDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_scrollFlags="snap">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_cardView_articleDetails">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/paddingVertical_cardVew_articleDetails"
+                android:layout_marginEnd="@dimen/paddingHorizontal_cardView_articleDetails"
+                android:layout_marginStart="@dimen/paddingHorizontal_cardView_articleDetails"
+                android:layout_marginTop="@dimen/paddingVertical_cardVew_articleDetails"
+                app:cardElevation="@dimen/elevation_cardView">
 
-                <android.support.constraint.ConstraintLayout
+                <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <View
+                    <android.support.v7.widget.LinearLayoutCompat
                         android:id="@+id/background_articleDetail_metaDetails"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView_articleDetail_publishingDate"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView_articleDetail_author"/>
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/padding_metaDetails_articleDetails"
+                        android:paddingEnd="@dimen/padding_metaDetails_articleDetails"
+                        android:paddingStart="@dimen/padding_metaDetails_articleDetails"
+                        android:paddingTop="@dimen/padding_metaDetails_articleDetails">
 
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/textView_articleDetail_author"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp"
-                        android:paddingTop="8dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@color/colorIcons"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Philip K. Dick"/>
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/textView_articleDetail_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@color/colorIcons"
+                            tools:text="Philip K. Dick"/>
 
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/textView_articleDetail_publishingDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorIcons"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_articleDetail_author"
-                        tools:text="December 27, 2017"/>
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/textView_articleDetail_publishingDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorIcons"
+                            tools:text="December 27, 2017"/>
+                    </android.support.v7.widget.LinearLayoutCompat>
 
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/textView_articleDetail_content"
@@ -106,14 +101,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:linksClickable="true"
-                        android:padding="16dp"
+                        android:padding="@dimen/padding_content_articleDetails"
                         android:textColor="@color/colorTextPrimary"
                         android:textColorLink="?colorAccent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/background_articleDetail_metaDetails"
                         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
-                </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
         </android.support.v4.widget.NestedScrollView>
 
@@ -122,8 +114,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_floatingActionButton"
             android:tint="@color/colorIcons"
+            app:elevation="@dimen/elevation_floatingActionButton"
             app:fabSize="normal"
             app:layout_anchor="@+id/scrollView_articleDetail"
             app:layout_anchorGravity="bottom|end"
