@@ -125,7 +125,7 @@ public final class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.Vi
       int primaryColor = ContextCompat.getColor(this.itemBinding.getRoot().getContext(), R.color.colorPrimary);
     
       this.itemBinding
-          .backgroundMetaDetails
+          .metaDetails
           .setBackgroundColor(palette.getMutedColor(primaryColor));
     }
   

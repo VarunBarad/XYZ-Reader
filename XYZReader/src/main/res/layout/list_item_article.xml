@@ -14,74 +14,70 @@
         android:foreground="?selectableItemBackground"
         app:cardElevation="@dimen/elevation_cardView">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/imageView_thumbnail"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/colorIcons"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="w,2:3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/textView_date"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="#ffff"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_thumbnail"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-
-            <View
-                android:id="@+id/background_metaDetails"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_author"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_title"/>
+                android:layout_height="wrap_content">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/textView_title"
-                style="@style/TextAppearance.AppCompat.Subhead"
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imageView_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorIcons"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textView_date"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#ffff"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/metaDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:paddingBottom="4dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-                android:textColor="@color/colorIcons"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView_thumbnail"/>
+                android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/textView_author"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="@color/colorIcons"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_title"/>
-        </android.support.constraint.ConstraintLayout>
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textView_title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:textColor="@color/colorIcons"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/textView_author"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/colorIcons"/>
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.CardView>
 </layout>
