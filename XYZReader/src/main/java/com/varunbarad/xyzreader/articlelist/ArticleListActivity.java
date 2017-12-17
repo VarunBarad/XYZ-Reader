@@ -2,13 +2,16 @@ package com.varunbarad.xyzreader.articlelist;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.varunbarad.xyzreader.R;
 import com.varunbarad.xyzreader.articledetails.ArticleDetailActivity;
@@ -167,5 +170,23 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     this.dataBinding
         .swipeRefreshLayoutArticleListArticles
         .setRefreshing(false);
+    
+    this.showNetworkErrorSnackbar();
+  }
+  
+  private void showNetworkErrorSnackbar() {
+    Snackbar snackbar = Snackbar.make(
+        this.dataBinding.getRoot(),
+        R.string.message_networkError,
+        Snackbar.LENGTH_LONG
+    );
+    
+    TextView snackbarTextView = snackbar
+        .getView()
+        .findViewById(android.support.design.R.id.snackbar_text);
+    
+    snackbarTextView.setTextColor(ContextCompat.getColor(this, R.color.colorIcons));
+    
+    snackbar.show();
   }
 }

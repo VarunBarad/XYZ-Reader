@@ -8,6 +8,7 @@
     <string name="action_share">Share</string>
 
     <string name="message_share">%s\nRead this great article by %s.</string>
+    <string name="message_networkError">Data couldn\'t be fetched. Please check your connection.</string>
 
     <string name="up">Up</string>
 
